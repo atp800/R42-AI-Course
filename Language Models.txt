@@ -1,0 +1,48 @@
+Language Models
+https://www.youtube.com/watch?v=rURRYI66E54
+
+
+Language models provide probability of a given sequence of words
+-useful for anyhting involve language prediction (generating text, speech recognition etc.)
+
+Sequences of waords are tockenised, either into words, or into subwords (like ing and eau) to provde greater understanding of meaning and context
+
+Input words or tokens are turned into vectors using embedding algorithms
+Embedding algorithms allow words to be expressed as numbers/vectors with reduced dimensions, and maintain contextual similarity (words with similar meanings or that appear together are close in the vector space (i.e. if all the vecors were mapped on a multidimensional graph, such words would be close together)
+
+
+Memory in Models -RNNs
+
+Provide with a word and a vector (initialised to 0s?)
+Network outputs predicted next word, and an updated vector
+Once trained properly, the vector should effectively encapsulate the previous sentence, or at least the most impornt aspects of it, up to that point
+	-some part might remember something that indicates a male pronoun should eb used next, or that the previous word was 	an adjective
+Nothing theoretically stopping something from the beginning of a provided word sequence from persisting or having influence in the vector right unitl the end, but in practise this doens't happen, and things degrade/are lost over time
+	-soemthing from the start needs to be remembered at every step, and if at any point it gets overwritten, that 	influence itn the vector is lost
+
+
+LSTMs
+Based on RNNs, but have subnetworks that make specific decisions, gates for forgetting
+Part of the learning is deciding what to forget and what to pass on (i.e. parameters that are trained for these)
+-actively decides what to forget/remember
+-these ahve better performance
+-some also use attention-based mechanisms
+-quite complex
+
+
+Transformers
+Simplify LSTM model by only using attention
+Actively decides which parts of another part of the data will be considered
+Selectively looks at things that are relevant-systems learns where to look
+-can look at where attention was when producing different ouptuts, making it more explainable, helps diagnose issues
+
+
+
+Reformers (https://arxiv.org/pdf/2001.04451.pdf)
+Google's less resource-demanding version of the transformer
+Also faster for longer sequences
+Uses locality sensative hashing for attention rather than dot-product system
+-hashing designed to maximise (rather than minimise) collisions, group similar tokens into buckets
+Uses reversible residual networks, which allow the activation of a previous layer to be determiend by the following layer, reducing the memory needed for backpropogation (only needs to store each activation once, rather than once for each layer)
+
+"LSH is a well-known algorithm for an efficient and approximate way of nearest neighbors search in high dimensional datasets. The main idea behind LSH is to select hash functions such that for two points ‘p’ and ‘q’, if ‘q’ is close to ‘p’ then with good enough probability we have ‘hash(q) == hash(p)’."
